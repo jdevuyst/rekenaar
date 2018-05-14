@@ -1,0 +1,8 @@
+package rekenaar
+
+sourceloc = https://github.com/jdevuyst/rekenaar.git
+
+opts = "-p pruviloj -p contrib"
+sourcedir = src
+
+modules = Rekenaar.Infer.Monoid
