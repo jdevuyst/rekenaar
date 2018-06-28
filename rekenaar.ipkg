@@ -6,3 +6,6 @@ opts = "-p pruviloj -p contrib"
 sourcedir = src
 
 modules = Rekenaar.Infer.Monoid
+        , Rekenaar.Reflect.Utils
+        , Rekenaar.Reflect.Monoid
+        , Rekenaar.Elab.Monoid

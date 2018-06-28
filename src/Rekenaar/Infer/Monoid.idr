@@ -4,7 +4,6 @@ import Data.Fin
 import Data.Vect
 
 -- contrib
-import Decidable.Equality
 import Interfaces.Verified
 
 %default total
@@ -13,7 +12,7 @@ import Interfaces.Verified
 public export
 data Expr : Nat -> Type where
   Var : Fin cnt -> Expr cnt
-  Neutral : Expr _
+  Neutral : Expr cnt
   (<+>) : (lhs, rhs : Expr cnt) -> Expr cnt
 
 public export
@@ -65,9 +64,14 @@ Solution m lhs rhs =
   (env : Env m cnt) -> eval lhs env = eval rhs env
 
 export
-solve : (lhs, rhs : Expr cnt) -> {sameNF : normalize lhs = normalize rhs} -> Solution m lhs rhs
-solve lhs rhs {sameNF} env =
+solve : (lhs, rhs : Expr cnt) -> normalize lhs = normalize rhs -> Solution m lhs rhs
+solve lhs rhs sameNF env =
   rewrite correct lhs env in
   rewrite sameNF in
   rewrite sym $ correct rhs env in
   Refl
+
+export -- workaround for Idris bug
+solve' : (ty : Type) -> (m : VerifiedMonoid ty) -> (cnt : Nat) -> (lhs, rhs : Expr cnt) -> normalize lhs = normalize rhs -> Solution m lhs rhs
+solve' ty m cnt lhs rhs sameNF env =
+  solve {m} lhs rhs sameNF env
