@@ -48,16 +48,15 @@ atom : Raw -> Parsed
 atom raw = (S Z ** (Var FZ, [raw]))
 
 export
-parse : {binop, neutral : TTName} -> Raw -> Parsed
-parse raw@(RApp (RApp (Var name) lhs) rhs) {binop} {neutral} =
-  if name == binop
+parse : {binop, neutral : Raw} -> Raw -> Parsed
+parse raw@(RApp (RApp func lhs) rhs) {binop} {neutral} =
+  if func == binop
     then merge (parse {binop} {neutral} lhs) (parse {binop} {neutral} rhs)
     else atom raw
-parse raw@(Var name) {neutral} =
-  if name == neutral
+parse raw {neutral} =
+  if raw == neutral
     then (Z ** (Neutral, []))
     else atom raw
-parse raw = atom raw
 
 remap : Expr n -> Vect n (Fin n') -> Expr n'
 remap Neutral _ = Neutral

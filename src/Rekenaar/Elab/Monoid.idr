@@ -1,7 +1,7 @@
 module Rekenaar.Elab.Monoid
 
-import Data.Fin
-import Data.Vect
+import public Data.Fin
+import public Data.Vect
 
 -- contrib
 import Interfaces.Verified
@@ -9,7 +9,7 @@ import Interfaces.Verified
 -- pruviloj
 import Pruviloj.Core
 
-import Rekenaar.Infer.Monoid
+import public Rekenaar.Infer.Monoid
 import Rekenaar.Reflect.Monoid
 
 %default total
@@ -30,11 +30,11 @@ elabEq_ ty tc lhs rhs prf atoms {cnt} = do
 
   pure $ RApp solution env'
 
-mPart : String -> {binop, neutral : TTName} -> Raw -> ErrorReportPart
+mPart : String -> {binop, neutral : Raw} -> Raw -> ErrorReportPart
 mPart title raw {binop} {neutral} =
   let (cnt ** (expr, atoms)) = parse {binop} {neutral} raw in
 
-  let binopReport = SubReport [TextPart "`", NamePart binop, TextPart "`"] in
+  let binopReport = SubReport [TextPart "`", RawPart binop, TextPart "`"] in
   let nf = intersperse binopReport $ map RawPart $ map (`index` atoms) (normalize expr) in
 
   SubReport [TextPart title
@@ -44,8 +44,8 @@ mPart title raw {binop} {neutral} =
                        , TextPart $ show $ length atoms]
             ,SubReport $ (TextPart "Normal form:") :: nf]
 
-elabEq : {binop, neutral : TTName} -> {tc : Raw} -> (lhs, rhs : Raw) -> Elab Raw
-elabEq lhs rhs {binop} {neutral} {tc} = do
+elabEq : {ty, tc, binop, neutral : Raw} -> (lhs, rhs : Raw) -> Elab Raw
+elabEq lhs rhs {ty} {tc} {binop} {neutral} = do
   let parsed1 = parse {binop} {neutral} lhs
   let parsed2 = parse {binop} {neutral} rhs
 
@@ -54,25 +54,19 @@ elabEq lhs rhs {binop} {neutral} {tc} = do
                        ,mPart "LHS" {binop} {neutral} lhs
                        ,mPart "RHS" {binop} {neutral} rhs
                        ,SubReport [TextPart "Binary operation:"
-                                  ,NamePart binop]
+                                  ,RawPart binop]
                        ,SubReport [TextPart "Neutral element:"
-                                  ,NamePart neutral]
+                                  ,RawPart neutral]
                        ,SubReport [TextPart $ "Reason: " ++ msg]]
 
-  ty <- getTTType lhs
-  ty' <- forget ty
-  -- TODO: Resolve interface implementation here
+  elabEq_ ty tc expr1 expr2 prfNF atoms
 
-  elabEq_ ty' tc expr1 expr2 prfNF atoms
-
-refl : {binop, neutral : TTName} -> {tc : Raw} -> Elab ()
-refl {binop} {neutral} {tc} = do
+export
+refl : {ty, tc, binop, neutral : Raw} -> Elab ()
+refl {ty} {tc} {binop} {neutral} = do
   g <- goalType
   let Just (lhs, rhs) = parseEq g
     | Nothing => fail [TextPart "Could not parse (=) goal type"
                       ,RawPart g]
-  prf <- elabEq {binop} {neutral} {tc} lhs rhs
+  prf <- elabEq {ty} {tc} {binop} {neutral} lhs rhs
   exact prf
-
-anExample : (x : Nat) -> x + x = (x + Z) + x
-anExample x = %runElab (refl {binop=`{plus}} {neutral=`{Z}} {tc=`(PlusNatMonoidV)})

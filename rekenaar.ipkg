@@ -9,3 +9,5 @@ modules = Rekenaar.Infer.Monoid
         , Rekenaar.Reflect.Utils
         , Rekenaar.Reflect.Monoid
         , Rekenaar.Elab.Monoid
+        , Test.Examples.NatLaws
+        , Test.Examples.ListLaws
