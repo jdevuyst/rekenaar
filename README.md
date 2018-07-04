@@ -2,11 +2,11 @@
 
 WIP Idris compile-time tactics for monoids and other algebraic structures.
 
-Currently one solver is included. The solver can produce equalities for algebraic structures with an associative binary operation and a neutral elements (that is, monoids such as `List a, ++, []`).
+Currently one solver is included. The solver can produce equalities for algebraic structures with an associative binary operation and a neutral element (that is, monoids such as `⟨List a, ++, []⟩`).
 
 The following new features are highest on the priority list:
 
-- Support for commutative monoids (e.g. `Nat, +, 0`)
+- Support for commutative monoids (e.g. `⟨Nat, +, 0⟩`)
 - Improved usability via additional elaborator reflection magic
 
 See [here](src/Test/Examples) for examples on what's currently possible.
@@ -25,15 +25,17 @@ Initial code is based on the report [Evidence-providing problem solvers in Agda]
 
 Here's what this means:
 
-- `Interfaces.Verified.VerifiedMonoid` covers `List a` with `++`
-- Commutative monoids cover `Nat` with `+`, but Idris does not appear to natively have an interface for such structures
-- `Interfaces.Verified.VerifiedAbelianGroup` covers `ZZ` with `+` (and `-`)
-- `Interfaces.Verified.VerifiedRingWithUnit` covers `ZZ` with `+` (and `-`) and `*`
-- A Presburger arithmetic solver should, at a minimum, cover `Nat, +, =, LTE`
+- Monoids cover `List a` with `++` (`Interfaces.Verified.VerifiedMonoid`)
+- Commutative monoids cover `Nat` with `+` but Idris does not appear to natively have an interface for such structures
+- Abelian groups cover `ZZ` with `+` (`Interfaces.Verified.VerifiedAbelianGroup`)
+- Commutative rings cover `ZZ` with `+` and `*` (`Interfaces.Verified.VerifiedRingWithUnit`)
+- Informally, a Presburger arithmetic solver can be expected to cover, at a minimum, `⟨Nat, +, =, LTE⟩`
 
 ### `Rekenaar.Reflect`
 
 This namespace contains code that bridges the world of quotes `Raw` terms and the world of values.
+
+Key functionality:
 
 - Parse quoted `Raw` terms so that they can be processed by `Rekenaar.Infer` modules
 - Given a proof that two terms are equal, return a quoted `Raw` value of this proof
