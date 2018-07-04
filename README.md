@@ -1,15 +1,20 @@
 # Rekenaar
 
-WIP Idris compile-time tactics for monoids and other algebraic structures.
+[Idris](https://www.idris-lang.org) compile-time tactics for solving equations involving monoids and commutative monoids:
 
-Currently one solver is included. The solver can produce equalities for algebraic structures with an associative binary operation and a neutral element (that is, monoids such as `⟨List a, ++, []⟩`).
+- Monoids are algebraic structures with an associative binary operation and a neutral element. E.g. `(List a, ++, [])` is a monoid.
+- Commutative monoids are monoids where the binary operation is commutative (in addition to being associative). E.g. `(Nat, +, 0)` is a commutative monoid.
 
-The following new features are highest on the priority list:
-
-- Support for commutative monoids (e.g. `⟨Nat, +, 0⟩`)
-- Improved usability via additional elaborator reflection magic
-
+The tactics make use of Idris's [Elaborator Reflection](http://docs.idris-lang.org/en/v1.3.0/reference/elaborator-reflection.html). They first inspect the goal type and then attempt to fill in a value (proof) for that type.
+ 
 See [here](src/Test/Examples) for examples on what's currently possible.
+
+Known limitations:
+
+- Expressions that contain `::` or `S` or `minus` may currently confuse the solvers
+- The tactics can currently not resolve typeclasses or determine the names of the binary operator and neutral elements
+
+Fixing these issues shouldn't be difficult and is high on the priority list.
 
 ## Namespaces
 
@@ -23,13 +28,15 @@ Initial code is based on the report [Evidence-providing problem solvers in Agda]
 - [ ] Solver for commutative rings (`Interfaces.Verified.VerifiedRingWithUnity`)
 - [ ] Solver for Presburger arithmetic (`Decidable.Order.Ordered`)
 
-Here's what this means:
+So far, the first solver has been implemented in Rekenaar. The module `Rekenaar.Infer.CommutativeMonoid` also contains a variant of this solver, with an added understanding of commutativity.
 
-- Monoids cover `List a` with `++` (`Interfaces.Verified.VerifiedMonoid`)
-- Commutative monoids cover `Nat` with `+` but Idris does not appear to natively have an interface for such structures
-- Abelian groups cover `ZZ` with `+` (`Interfaces.Verified.VerifiedAbelianGroup`)
-- Commutative rings cover `ZZ` with `+` and `*` (`Interfaces.Verified.VerifiedRingWithUnit`)
-- Informally, a Presburger arithmetic solver can be expected to cover, at a minimum, `⟨Nat, +, =, LTE⟩`
+Ideally Rekenaar will eventually support the following algebraic structures:
+
+- [x] Monoids cover `List a` with `++` (`Interfaces.Verified.VerifiedMonoid`)
+- [x] Commutative monoids cover `Nat` with `+` (`Rekenaar.Infer.CommutativeMonoid.VerifiedCommutativeMonoid`)
+- [ ] Abelian groups cover `ZZ` with `+` (`Interfaces.Verified.VerifiedAbelianGroup`)
+- [ ] Commutative rings cover `ZZ` with `+` and `*` (`Interfaces.Verified.VerifiedRingWithUnit`)
+- [ ] Informally, a Presburger arithmetic solver can be expected to cover, at a minimum, `⟨Nat, +, =, LTE⟩`
 
 ### `Rekenaar.Reflect`
 
