@@ -6,37 +6,47 @@
 - Commutative monoids are monoids where the binary operation is commutative (in addition to being associative). E.g. `(Nat, +, 0)` is a commutative monoid.
 
 The tactics make use of Idris's [Elaborator Reflection](http://docs.idris-lang.org/en/v1.3.0/reference/elaborator-reflection.html). They first inspect the goal type and then attempt to fill in a value (proof) for that type.
- 
-See [here](src/Test/Examples) for examples on what's currently possible.
 
-Known limitations:
+```idris
+import Rekenaar
+import Data.Fin
 
-- Expressions that contain `::` or `S` or `minus` may currently confuse the solvers
-- The tactics can currently not resolve typeclasses or determine the names of the binary operator and neutral elements
+plusCommutative : (l, r : Nat) -> l + r = r + l
+plusCommutative = %runElab natPlusRefl
 
-Fixing these issues shouldn't be difficult and is high on the priority list.
+plusCommutativeRewrite : (l, r : Nat) -> Fin (l + r) -> Fin (r + l)
+plusCommutativeRewrite l r fin =
+  rewrite the (r + l = l + r) (%runElab natPlusRefl) in fin
+```
+
+The test modules include more [examples](src/Test/Examples).
+
+Planned features:
+
+- Expressions that contain `::` or `S` may currently confuse the solvers. Such expressions should automatically be rewritten in terms of `++` and `+`.
+- `=` types are often used in conjunction with Idris's `rewrite ... in` feature. It should be possible to write elaborators that can automate such uses further. For example, in the `plusCommutativeRewrite` example the user would ideally not have to spell out the `r + l = l + r` equality.
 
 ## Namespaces
+
+### `Rekenaar`
+
+The [Rekenaar module](src/Rekenaar.idr) contains the main API.
 
 ### `Rekenaar.Infer`
 
 Verified solvers for algebraic structures.
-
-Initial code is based on the report [Evidence-providing problem solvers in Agda](https://github.com/umazalakain/fyp). This report covers the following structures:
-
-- [x] Solver for monoids (`Interfaces.Verified.VerifiedMonoid`)
-- [ ] Solver for commutative rings (`Interfaces.Verified.VerifiedRingWithUnity`)
-- [ ] Solver for Presburger arithmetic (`Decidable.Order.Ordered`)
-
-So far, the first solver has been implemented in Rekenaar. The module `Rekenaar.Infer.CommutativeMonoid` also contains a variant of this solver, with an added understanding of commutativity.
 
 Ideally Rekenaar will eventually support the following algebraic structures:
 
 - [x] Monoids cover `List a` with `++` (`Interfaces.Verified.VerifiedMonoid`)
 - [x] Commutative monoids cover `Nat` with `+` (`Rekenaar.Infer.CommutativeMonoid.VerifiedCommutativeMonoid`)
 - [ ] Abelian groups cover `ZZ` with `+` (`Interfaces.Verified.VerifiedAbelianGroup`)
-- [ ] Commutative rings cover `ZZ` with `+` and `*` (`Interfaces.Verified.VerifiedRingWithUnit`)
-- [ ] Informally, a Presburger arithmetic solver can be expected to cover, at a minimum, `⟨Nat, +, =, LTE⟩`
+- [ ] Commutative rings cover `ZZ` with `+` and `*` (`Interfaces.Verified.VerifiedRingWithUnity`)
+- [ ] A Presburger arithmetic solver that covers, at a minimum, `⟨Nat, +, =, LTE⟩`
+
+The module `Rekenaar.Infer.Monoid` is based on chapter 3 of the report [Evidence-providing problem solvers in Agda](https://github.com/umazalakain/fyp).
+
+The module `Rekenaar.Infer.CommutativeMonoid` started out as a copy of `Rekenaar.Infer.Monoid`. One open task is to make these two modules share more code.
 
 ### `Rekenaar.Reflect`
 
@@ -46,6 +56,7 @@ Key functionality:
 
 - Parse quoted `Raw` terms so that they can be processed by `Rekenaar.Infer` modules
 - Given a proof that two terms are equal, return a quoted `Raw` value of this proof
+- Utility functions for working with `Raw` values
 
 ### `Rekenaar.Elab`
 

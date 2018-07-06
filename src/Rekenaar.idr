@@ -20,6 +20,7 @@ ListMonoidV = %runElab (do intros; search)
 listRefl : Elab ()
 listRefl = do
   intros
+  compute
   g <- goalType
   let Just (l, _) = parseEq g
     | Nothing => fail [TextPart "Could not parse (=) of lists", RawPart g]
@@ -32,4 +33,5 @@ listRefl = do
 natPlusRefl : Elab ()
 natPlusRefl = do
   intros
+  compute
   CommutativeMonoid.refl {ty=`(Nat)} {tc=`(PlusNatCommMonoidV)} {binop=`(plus)} {neutral=`(Z)}
