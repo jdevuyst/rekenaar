@@ -5,9 +5,13 @@ sourceloc = https://github.com/jdevuyst/rekenaar.git
 opts = "-p pruviloj -p contrib"
 sourcedir = src
 
-modules = Rekenaar.Infer.Monoid
+modules = Rekenaar
+        , Rekenaar.Infer.Monoid
+        , Rekenaar.Infer.CommutativeMonoid
         , Rekenaar.Reflect.Utils
         , Rekenaar.Reflect.Monoid
+        , Rekenaar.Reflect.CommutativeMonoid
         , Rekenaar.Elab.Monoid
+        , Rekenaar.Elab.CommutativeMonoid
         , Test.Examples.NatLaws
         , Test.Examples.ListLaws
