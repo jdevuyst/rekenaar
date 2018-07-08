@@ -1,4 +1,4 @@
-module Test.Examples.NatLaws
+module Test.NatPlus
 
 import Data.Fin
 

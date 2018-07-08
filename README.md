@@ -2,10 +2,12 @@
 
 [Idris](https://www.idris-lang.org) compile-time tactics for solving equations involving monoids and commutative monoids:
 
-- Monoids are algebraic structures with an associative binary operation and a neutral element. E.g. `(List a, ++, [])` is a monoid.
-- Commutative monoids are monoids where the binary operation is commutative (in addition to being associative). E.g. `(Nat, +, 0)` is a commutative monoid.
+- Monoids are algebraic structures with an associative binary operation and a neutral element. E.g. `⟨List a, [], ++⟩` is a monoid.
+- Commutative monoids are monoids where the binary operation is commutative (in addition to being associative). E.g. `⟨Nat, 0, +⟩` is a commutative monoid.
 
 The tactics make use of Idris's [Elaborator Reflection](http://docs.idris-lang.org/en/v1.3.0/reference/elaborator-reflection.html). They first inspect the goal type and then attempt to fill in a value (proof) for that type.
+
+## Examples
 
 ```idris
 import Rekenaar
@@ -15,13 +17,10 @@ plusCommutative : (l, r : Nat) -> l + r = r + l
 plusCommutative = %runElab natPlusRefl
 
 plusCommutativeRewrite : (l, r : Nat) -> Fin (l + r) -> Fin (r + l)
-plusCommutativeRewrite l r fin =
-  rewrite the (r + l = l + r) (%runElab natPlusRefl) in fin
+plusCommutativeRewrite l r fin = rewrite the (r + l = l + r) (%runElab natPlusRefl) in fin
 ```
 
-The test modules include more [examples](src/Test/Examples).
-
-Planned features:
+## Key missing features
 
 - Expressions that contain `::` or `S` may currently confuse the solvers. Such expressions should automatically be rewritten in terms of `++` and `+`.
 - `=` types are often used in conjunction with Idris's `rewrite ... in` feature. It should be possible to write elaborators that can automate such uses further. For example, in the `plusCommutativeRewrite` example the user would ideally not have to spell out the `r + l = l + r` equality.
@@ -38,11 +37,11 @@ Verified solvers for algebraic structures.
 
 Ideally Rekenaar will eventually support the following algebraic structures:
 
-- [x] Monoids cover `List a` with `++` (`Interfaces.Verified.VerifiedMonoid`)
-- [x] Commutative monoids cover `Nat` with `+` (`Rekenaar.Infer.CommutativeMonoid.VerifiedCommutativeMonoid`)
-- [ ] Abelian groups cover `ZZ` with `+` (`Interfaces.Verified.VerifiedAbelianGroup`)
+- [x] Monoids cover `⟨List a, [], ++⟩` (`Interfaces.Verified.VerifiedMonoid`)
+- [x] Commutative monoids cover `⟨Nat, 0, +⟩` (`Rekenaar.Infer.CommutativeMonoid.VerifiedCommutativeMonoid`)
+- [ ] Abelian groups cover `⟨ZZ, 0, +⟩` (`Interfaces.Verified.VerifiedAbelianGroup`)
 - [ ] Commutative rings cover `ZZ` with `+` and `*` (`Interfaces.Verified.VerifiedRingWithUnity`)
-- [ ] A Presburger arithmetic solver that covers, at a minimum, `⟨Nat, +, =, LTE⟩`
+- [ ] A Presburger arithmetic solver that covers, at a minimum, `⟨Nat, +, 0⟩` with `=` and `LTE` relations
 
 The module `Rekenaar.Infer.Monoid` is based on chapter 3 of the report [Evidence-providing problem solvers in Agda](https://github.com/umazalakain/fyp).
 
@@ -62,10 +61,10 @@ Key functionality:
 
 Elaborator reflection scripts for invoking the solvers.
 
-Notably missing:
+Goals include:
 
-- Logic for automatically resolving the interface implementation, element type, neutral value, and binary operation(s)
-- Elaborator script for rewriting `List.(::)` or `Nat.S` function applications in terms of `List.(++)` or `Nat.plus`
-- Elaborator script for replacing multiplication of a stuck term by a constant (e.g. `3 * n`), with repeated addition of the stuck term (e.g. `n + n + n`)
-- Elaborator script that given a guess and a goal type, figures out how to rewrite the goal type to make the guess fit (e.g. rewrite `Vect (n + m) a` into `Vect (m + n) a`)
-
+- [x] Elaborator scripts for producing `=` values
+- [ ] Logic for rewriting `List.(::)` or `Nat.S` function applications in terms of `List.(++)` or `Nat.plus` before running the solvers
+- [ ] Elaborator script that given a guess and a goal type, figures out how to rewrite the goal type to make the guess fit (e.g. rewrite `Vect (n + m) a` into `Vect (m + n) a`)
+- [ ] Elaborator script for replacing multiplication of a stuck term by a constant (e.g. `3 * n`), with repeated addition of the stuck term (e.g. `n + n + n`)
+- [ ] Logic for automatically resolving the interface implementation, element type, neutral value, and binary operation(s)

@@ -1,4 +1,4 @@
-module Test.Examples.ListLaws
+module Test.List
 
 import Rekenaar
 

@@ -1,6 +1,5 @@
 module Rekenaar.Reflect.Monoid
 
-import Control.Isomorphism
 import Data.Fin
 import Data.Vect
 

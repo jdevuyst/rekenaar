@@ -13,5 +13,5 @@ modules = Rekenaar
         , Rekenaar.Reflect.CommutativeMonoid
         , Rekenaar.Elab.Monoid
         , Rekenaar.Elab.CommutativeMonoid
-        , Test.Examples.NatLaws
-        , Test.Examples.ListLaws
+        , Test.List
+        , Test.NatPlus
