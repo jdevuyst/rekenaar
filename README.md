@@ -25,6 +25,26 @@ plusCommutativeRewrite l r fin = rewrite the (r + l = l + r) (%runElab natPlusRe
 - Expressions that contain `::` or `S` may currently confuse the solvers. Such expressions should automatically be rewritten in terms of `++` and `+`.
 - `=` types are often used in conjunction with Idris's `rewrite ... in` feature. It should be possible to write elaborators that can automate such uses further. For example, in the `plusCommutativeRewrite` example the user would ideally not have to spell out the `r + l = l + r` equality.
 
+## Installation
+
+1. Download the Rekenaar source code and open it in the terminal.
+2. Run `idris --install rekenaar.ipkg`.
+
+The Rekenaar package will be installed in ``` `idris --libdir\`/rekenaar```.
+
+To experiment, type `idris -prekenaar` in the terminal:
+
+```
+Idris> :module Rekenaar
+*Rekenaar> :let thm = the ((l, r : Nat) -> l + r = r + l) (%runElab natPlusRefl)
+*Rekenaar> :t thm
+thm : (l : Nat) -> (r : Nat) -> plus l r = plus r l
+*Rekenaar> thm 3 4
+Refl : 7 = 7
+```
+
+If you want to use Rekenaar in your own project, make sure to include `-prekenaar` in the `opts` field of your `.ipkg` file.
+
 ## Namespaces
 
 ### `Rekenaar`
