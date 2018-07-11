@@ -13,6 +13,8 @@ The tactics make use of Idris's [Elaborator Reflection](http://docs.idris-lang.o
 import Rekenaar
 import Data.Fin
 
+%language ElabReflection
+
 plusCommutative : (l, r : Nat) -> l + r = r + l
 plusCommutative = %runElab natPlusRefl
 
@@ -30,7 +32,7 @@ plusCommutativeRewrite l r fin = rewrite the (r + l = l + r) (%runElab natPlusRe
 1. Download the Rekenaar source code and open it in the terminal.
 2. Run `idris --install rekenaar.ipkg`.
 
-The Rekenaar package will be installed in ``` `idris --libdir\`/rekenaar```.
+The Rekenaar package will be installed in `$(idris --libdir)/rekenaar`.
 
 To experiment, type `idris -prekenaar` in the terminal:
 
