@@ -20,11 +20,14 @@ plusCommutative = %runElab natPlusRefl
 
 plusCommutativeRewrite : (l, r : Nat) -> Fin (l + r) -> Fin (r + l)
 plusCommutativeRewrite l r fin = rewrite the (r + l = l + r) (%runElab natPlusRefl) in fin
+
+succSuccPlusTwo : (n : Nat) -> S (S n) = n + 2
+succSuccPlusTwo = %runElab natPlusRefl
 ```
 
 ## Key missing features
 
-- Expressions that contain `::` or `S` may currently confuse the solvers. Such expressions should automatically be rewritten in terms of `++` and `+`.
+- Expressions that contain `::` could confuse the list solver. Such expressions should automatically be rewritten in terms of `++`. A similar feature has already been completed for `Nat`s and needs to be generalized.
 - `=` types are often used in conjunction with Idris's `rewrite ... in` feature. It should be possible to write elaborators that can automate such uses further. For example, in the `plusCommutativeRewrite` example the user would ideally not have to spell out the `r + l = l + r` equality.
 
 ## Installation
@@ -34,7 +37,7 @@ plusCommutativeRewrite l r fin = rewrite the (r + l = l + r) (%runElab natPlusRe
 
 The Rekenaar package will be installed in `$(idris --libdir)/rekenaar`.
 
-To experiment, type `idris -prekenaar` in the terminal:
+To experiment, type `idris -p rekenaar` in the terminal:
 
 ```
 Idris> :module Rekenaar
@@ -45,7 +48,7 @@ thm : (l : Nat) -> (r : Nat) -> plus l r = plus r l
 Refl : 7 = 7
 ```
 
-If you want to use Rekenaar in your own project, make sure to include `-prekenaar` in the `opts` field of your `.ipkg` file.
+If you want to use Rekenaar in your own project, make sure to include `-p rekenaar` in the `opts` field of your `.ipkg` file.
 
 ## Namespaces
 
@@ -86,7 +89,9 @@ Elaborator reflection scripts for invoking the solvers.
 Goals include:
 
 - [x] Elaborator scripts for producing `=` values
-- [ ] Logic for rewriting `List.(::)` or `Nat.S` function applications in terms of `List.(++)` or `Nat.plus` before running the solvers
+- [ ] Logic for rewriting applications of constructors (such as `List.(::)` or `Nat.S`) in terms of `<+>` before running the solvers
+  - [x] Implement this for `Nat.S` (needs to be tested and optimized more)
+  - [ ] Implement this for `List.(::)`
 - [ ] Elaborator script that given a guess and a goal type, figures out how to rewrite the goal type to make the guess fit (e.g. rewrite `Vect (n + m) a` into `Vect (m + n) a`)
 - [ ] Elaborator script for replacing multiplication of a stuck term by a constant (e.g. `3 * n`), with repeated addition of the stuck term (e.g. `n + n + n`)
 - [ ] Logic for automatically resolving the interface implementation, element type, neutral value, and binary operation(s)

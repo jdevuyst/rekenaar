@@ -1,6 +1,6 @@
 package rekenaar
 
-sourceloc = https://github.com/jdevuyst/rekenaar.git
+sourceloc = https://github.com/jdevuyst/rekenaar
 
 opts = "-p pruviloj -p contrib"
 sourcedir = src
@@ -13,5 +13,6 @@ modules = Rekenaar
         , Rekenaar.Reflect.CommutativeMonoid
         , Rekenaar.Elab.Monoid
         , Rekenaar.Elab.CommutativeMonoid
+        , Rekenaar.Elab.Succ
         , Test.List
         , Test.NatPlus

@@ -24,16 +24,16 @@ rawVect : Vect cnt Raw -> Raw -> Raw
 rawVect [] ty = `(Vect.Nil {elem=~ty})
 rawVect (x::xs) ty {cnt = S cnt'} = `(Vect.(::) {elem=~ty} {len=~(quote cnt')} ~x ~(rawVect xs ty))
 
-parseApp : TTName -> (argc : Nat) -> Raw -> Maybe (Vect argc Raw)
-parseApp name argc raw = map reverse $ helper argc raw
+parseApp : Raw -> (argc : Nat) -> Raw -> Maybe (Vect argc Raw)
+parseApp fun argc raw = map reverse $ helper argc raw
   where
     helper : (argc : Nat) -> Raw -> Maybe (Vect argc Raw)
-    helper Z (Var name') = if name == name' then Just [] else Nothing
+    helper Z fun' = if fun == fun' then Just [] else Nothing
     helper (S argc) (RApp f arg) = map (arg ::) (helper argc f)
-    helper _ _ = Nothing
+    helper (S _) _ = Nothing
 
 parseEq : Raw -> Maybe (Raw, Raw)
-parseEq = map proj . parseApp `{(=)} 4
+parseEq = map proj . parseApp (Var `{(=)}) 4
   where
     proj : Vect 4 Raw -> (Raw, Raw)
     proj v = (2 `index` v, 3 `index` v)
