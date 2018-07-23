@@ -95,3 +95,8 @@ Goals include:
 - [ ] Elaborator script that given a guess and a goal type, figures out how to rewrite the goal type to make the guess fit (e.g. rewrite `Vect (n + m) a` into `Vect (m + n) a`)
 - [ ] Elaborator script for replacing multiplication of a stuck term by a constant (e.g. `3 * n`), with repeated addition of the stuck term (e.g. `n + n + n`)
 - [ ] Logic for automatically resolving the interface implementation, element type, neutral value, and binary operation(s)
+
+## Further reading
+
+- [Evidence-providing problem solvers in Agda](https://github.com/umazalakain/fyp)
+- [RingIdris](https://github.com/FranckS/RingIdris): Ring solver for Idris 0.6, which does not presently compile for modern versions of Idris
