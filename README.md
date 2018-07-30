@@ -100,3 +100,4 @@ Goals include:
 
 - [Evidence-providing problem solvers in Agda](https://github.com/umazalakain/fyp)
 - [RingIdris](https://github.com/FranckS/RingIdris): Ring solver for Idris 0.6, which does not presently compile for modern versions of Idris
+- [Christiansen's monoid tactic](https://gist.github.com/david-christiansen/066ad771212b2f20ea40)
