@@ -63,8 +63,8 @@ permutate l = do
 covering export
 permutationTest : IO ()
 permutationTest = do
-  let input = toList $ range {len=5}
-  let sorted = sort input
+  let input = toList $ range {len=7}
+  let testCases = permutate input ++ ([input ++ input ++ reverse input])
   runTests $
-    (flip map) (permutate input) $ \xs => do
-      assertEquals @{eqNF} @{showNF} sorted (sortNF xs)
+    (flip map) testCases $ \xs => do
+      assertEquals @{eqNF} @{showNF} (sort xs) (sortNF xs)

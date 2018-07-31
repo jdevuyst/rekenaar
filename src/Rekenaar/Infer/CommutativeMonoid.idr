@@ -76,7 +76,7 @@ sortNF_ (S n) expr = sortNF1 $ sortNF_ n expr
 sortNF : NormalForm cnt -> NormalForm cnt
 sortNF [] = []
 sortNF [x] = [x]
-sortNF {cnt} expr = sortNF_ cnt expr
+sortNF expr = sortNF_ (length expr) expr
 
 commAssoc : VerifiedCommutativeMonoid ty => {l, c, r, rhs : ty} -> l <+> (c <+> r) = rhs -> c <+> (l <+> r) = rhs
 commAssoc eq {l} {c} {r} {rhs} =
@@ -106,7 +106,8 @@ sortLemma_ {n=S n'} {m} nf env =
 sortLemma : {m : VerifiedCommutativeMonoid ty} -> (nf : NormalForm cnt) -> (env : Env m cnt) -> evalNF {m} nf env = evalNF {m} (sortNF nf) env
 sortLemma [] _ = Refl
 sortLemma [x] _ = Refl
-sortLemma {cnt} {m} (x::y::zs) env = sortLemma_ {n=cnt} {m} (x::y::zs) env
+sortLemma {cnt} {m} (x::y::zs) env =
+  sortLemma_ {n=2 + length zs} {m} (x::y::zs) env
 
 correct : (expr : Expr cnt) -> (env : Env m cnt) -> eval expr env = evalNF (sortNF (normalize_ expr)) env
 correct Neutral env {m} = Refl
