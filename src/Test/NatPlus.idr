@@ -1,6 +1,10 @@
 module Test.NatPlus
 
+import Data.Vect
 import Data.Fin
+
+-- contrib
+import Test.Unit
 
 import Rekenaar
 
@@ -41,3 +45,26 @@ succSuccPlusTwo = %runElab natPlusRefl
 
 contrivedExample : (a, b, c, d : Nat) -> a + (4 + (b + 3 + d) + Z) + (c + c) = (d + b) + ((2 + 3 + c + a) + 2 + c)
 contrivedExample = %runElab natPlusRefl
+
+private covering
+permutate : Eq ty => List ty -> List (List ty)
+permutate [] = [[]]
+permutate l = do
+  h <- l
+  t <- permutate $ filter (\x => x /= h) l
+  pure (h::t)
+
+[showNF] Show (CommutativeMonoid.NormalForm n) where
+  show xs {n} = show $ map (show . (finToInteger {n})) xs
+
+[eqNF] Eq (CommutativeMonoid.NormalForm n) where
+  (==) xs ys = show @{showNF} xs == show @{showNF} ys
+
+covering export
+permutationTest : IO ()
+permutationTest = do
+  let input = toList $ range {len=5}
+  let sorted = sort input
+  runTests $
+    (flip map) (permutate input) $ \xs => do
+      assertEquals @{eqNF} @{showNF} sorted (sortNF xs)

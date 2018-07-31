@@ -16,3 +16,5 @@ modules = Rekenaar
         , Rekenaar.Elab.Succ
         , Test.List
         , Test.NatPlus
+
+tests = Test.NatPlus.permutationTest
