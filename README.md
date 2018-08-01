@@ -89,12 +89,12 @@ Elaborator reflection scripts for invoking the solvers.
 Goals include:
 
 - [x] Elaborator scripts for producing `=` values
-- [ ] Logic for rewriting applications of constructors (such as `List.(::)` or `Nat.S`) in terms of `<+>` before running the solvers
-  - [x] Implement this for `Nat.S` (needs to be tested and optimized more)
+- [ ] Logic for rewriting applications of succ/cons-like constructors (such as `List.(::)` or `Nat.S`) in terms of `<+>` before running the solvers
+  - [x] Implement this for `Nat.S`
   - [ ] Implement this for `List.(::)`
 - [ ] Elaborator script that given a guess and a goal type, figures out how to rewrite the goal type to make the guess fit (e.g. rewrite `Vect (n + m) a` into `Vect (m + n) a`)
 - [ ] Elaborator script for replacing multiplication of a stuck term by a constant (e.g. `3 * n`), with repeated addition of the stuck term (e.g. `n + n + n`)
-- [ ] Logic for automatically resolving the interface implementation, element type, neutral value, and binary operation(s)
+- [ ] Logic for automatically resolving the interface implementation, element type, neutral value, binary operation(s), and succ/cons-like constructors
 
 ## Further reading
 

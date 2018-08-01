@@ -9,7 +9,7 @@ import Pruviloj.Core
 import Rekenaar.Reflect.Utils
 import public Rekenaar.Elab.Monoid
 import public Rekenaar.Elab.CommutativeMonoid
-import public Rekenaar.Elab.Succ
+import public Rekenaar.Elab.Uncompute
 
 %default total
 %access public export
@@ -32,19 +32,12 @@ listRefl = do
     | Nothing => fail [TextPart "LHS of (=) is not a list type", RawPart listTy]
   Monoid.refl {ty=listTy} {tc=`(ListMonoidV {elem=~elemTy})} {binop=`(List.(++) {a=~elemTy})} {neutral=`(List.Nil {elem=~elemTy})}
 
-plusOneSucc' : (n : Nat) -> n + S Z = S n
-plusOneSucc' n = rewrite plusCommutative n (S Z) in plusOneSucc n
-
-plusOneSuccTerms : Raw -> (Raw, Raw)
-plusOneSuccTerms x = (`(plus ~x (S Z)), `(S ~x))
-
 covering
 natPlusRefl : Elab ()
 natPlusRefl = do
   intros
   compute
-  hs <- unSucc {ty=`(Nat)} {binop=`(plus)} {neutral=`(Z)} {succ=`(S)} {rewriteRule=`(plusOneSucc')} {rewriteRuleTerms=plusOneSuccTerms}
+  uncompute $ unSucc {binop=`(plus)} {neutral=`(Z)} {succ=`(S)}
   CommutativeMonoid.refl {ty=`(Nat)} {tc=`(PlusNatCommMonoidV)} {binop=`(plus)} {neutral=`(Z)}
-  for_ hs $ \h => do unfocus h; solve
 
 -- TODO: add natMultRefl, zzPlusRefl, zzMultRefl

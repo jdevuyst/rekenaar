@@ -13,7 +13,7 @@ modules = Rekenaar
         , Rekenaar.Reflect.CommutativeMonoid
         , Rekenaar.Elab.Monoid
         , Rekenaar.Elab.CommutativeMonoid
-        , Rekenaar.Elab.Succ
+        , Rekenaar.Elab.Uncompute
         , Test.List
         , Test.NatPlus
 
