@@ -11,7 +11,7 @@ import public Rekenaar.Elab.Monoid
 import public Rekenaar.Elab.CommutativeMonoid
 import public Rekenaar.Elab.Uncompute
 
-%default total
+%default covering
 %access public export
 %language ElabReflection
 
@@ -20,19 +20,23 @@ ListMonoidV = %runElab (do intros; search)
 
 listRefl : Elab ()
 listRefl = do
-  intros
-  compute
-  -- TODO: replace all (x :: xs) by [x] ++ xs (where xs ≠ Nil)
-  g <- goalType
-  let Just (l, _) = parseEq g
-    | Nothing => fail [TextPart "Could not parse (=) of lists", RawPart g]
-  (_, listTyTT) <- check !getEnv l
-  listTy <- forget listTyTT
-  let Just [elemTy] = parseApp (Var `{List}) 1 listTy
-    | Nothing => fail [TextPart "LHS of (=) is not a list type", RawPart listTy]
-  Monoid.refl {ty=listTy} {tc=`(ListMonoidV {elem=~elemTy})} {binop=`(List.(++) {a=~elemTy})} {neutral=`(List.Nil {elem=~elemTy})}
+    intros
+    compute
+    (listTy, elemTy) <- listAndElemTypes
+    uncompute $ unCons {binop=`(List.(++) {a=~elemTy})} {neutral=`(List.Nil {elem=~elemTy})} {cons=`(List.(::) {elem=~elemTy})}
+    Monoid.refl {ty=listTy} {tc=`(ListMonoidV {elem=~elemTy})} {binop=`(List.(++) {a=~elemTy})} {neutral=`(List.Nil {elem=~elemTy})}
+  where
+    listAndElemTypes : Elab (Raw, Raw)
+    listAndElemTypes = do
+      g <- goalType
+      let Just (l, _) = parseEq g
+        | Nothing => fail [TextPart "Could not parse (=) of lists", RawPart g]
+      (_, listTyTT) <- check !getEnv l
+      listTy <- forget listTyTT
+      let Just [elemTy] = parseApp (Var `{List}) 1 listTy
+        | Nothing => fail [TextPart "LHS of (=) is not a list type", RawPart listTy]
+      pure (listTy, elemTy)
 
-covering
 natPlusRefl : Elab ()
 natPlusRefl = do
   intros

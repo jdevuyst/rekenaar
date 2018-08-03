@@ -14,3 +14,6 @@ appendNilRightNeutral = %runElab listRefl
 
 appendAssociative : (l, c, r : List a) -> l ++ c ++ r = (l ++ c) ++ r
 appendAssociative = %runElab listRefl
+
+prependSingletonConsElement : (l, r : List a) -> (x : a) -> (l ++ [x]) ++ r = l ++ (x::r)
+prependSingletonConsElement = %runElab listRefl

@@ -21,5 +21,20 @@ unSucc {binop} {neutral} {succ} = newTy
     newTy (RBind n b expr) = RBind n (newTy <$> b) (newTy expr)
     newTy expr = expr
 
+unCons : {binop, neutral, cons : Raw} -> Raw -> Raw
+unCons {binop} {neutral} {cons} = newTy
+  where
+    singleton : Raw -> Raw
+    singleton x = RApp (RApp cons x) neutral
+    newTy : Raw -> Raw
+    newTy (RApp (RApp f x) rest) =
+      RApp
+        (if f == cons
+          then RApp binop (singleton (newTy x))
+          else RApp (newTy f) (newTy x))
+        (newTy rest)
+    newTy (RBind n b expr) = RBind n (newTy <$> b) (newTy expr)
+    newTy expr = expr
+
 uncompute : (Raw -> Raw) -> Elab TTName
 uncompute f = do equiv (f !goalType)

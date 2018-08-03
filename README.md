@@ -27,7 +27,6 @@ succSuccPlusTwo = %runElab natPlusRefl
 
 ## Key missing features
 
-- Expressions that contain `::` could confuse the list solver. Such expressions should automatically be rewritten in terms of `++`. A similar feature has already been completed for `Nat`s and needs to be generalized.
 - `=` types are often used in conjunction with Idris's `rewrite ... in` feature. It should be possible to write elaborators that can automate such uses further. For example, in the `plusCommutativeRewrite` example the user would ideally not have to spell out the `r + l = l + r` equality.
 
 ## Installation
@@ -89,9 +88,7 @@ Elaborator reflection scripts for invoking the solvers.
 Goals include:
 
 - [x] Elaborator scripts for producing `=` values
-- [ ] Logic for rewriting applications of succ/cons-like constructors (such as `List.(::)` or `Nat.S`) in terms of `<+>` before running the solvers
-  - [x] Implement this for `Nat.S`
-  - [ ] Implement this for `List.(::)`
+- [x] Logic for rewriting applications of succ/cons-like constructors (such as `List.(::)` or `Nat.S`) in terms of `<+>` before running the solvers
 - [ ] Elaborator script that given a guess and a goal type, figures out how to rewrite the goal type to make the guess fit (e.g. rewrite `Vect (n + m) a` into `Vect (m + n) a`)
 - [ ] Elaborator script for replacing multiplication of a stuck term by a constant (e.g. `3 * n`), with repeated addition of the stuck term (e.g. `n + n + n`)
 - [ ] Logic for automatically resolving the interface implementation, element type, neutral value, binary operation(s), and succ/cons-like constructors
