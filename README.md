@@ -61,15 +61,20 @@ Verified solvers for algebraic structures.
 
 Ideally Rekenaar will eventually support the following algebraic structures:
 
-- [x] Monoids cover `⟨List a, [], ++⟩` (`Interfaces.Verified.VerifiedMonoid`)
-- [x] Commutative monoids cover `⟨Nat, 0, +⟩` (`Rekenaar.Infer.CommutativeMonoid.VerifiedCommutativeMonoid`)
-- [ ] Abelian groups cover `⟨ZZ, 0, +⟩` (`Interfaces.Verified.VerifiedAbelianGroup`)
-- [ ] Commutative rings cover `ZZ` with `+` and `*` (`Interfaces.Verified.VerifiedRingWithUnity`)
-- [ ] A Presburger arithmetic solver that covers, at a minimum, `⟨Nat, +, 0⟩` with `=` and `LTE` relations
+- [x] Monoids such as `⟨List a, [], ++⟩` (`Interfaces.Verified.VerifiedMonoid`)
+- [x] Commutative monoids such as `⟨Nat, 0, +⟩` (`Rekenaar.Infer.CommutativeMonoid.VerifiedCommutativeMonoid`)
+- [ ] Abelian groups such as `⟨ZZ, 0, +⟩` (`Interfaces.Verified.VerifiedAbelianGroup`)
+- [ ] Commutative rings such as `ZZ` with `+` and `*` (`Interfaces.Verified.VerifiedRingWithUnity`)
 
-The module `Rekenaar.Infer.Monoid` is based on chapter 3 of the report [Evidence-providing problem solvers in Agda](https://github.com/umazalakain/fyp).
+Constraint solving is also of interest:
 
-The module `Rekenaar.Infer.CommutativeMonoid` started out as a copy of `Rekenaar.Infer.Monoid`. One open task is to make these two modules share more code.
+- [ ] Given various `=` (or `LTE`) types with free variables (e.g. `(n : Nat ** (m : Nat ** n = m + 3))`), find values for the free variables, and yield values for the resulting (bound) `=` (or `LTE`) types
+- [ ] Given one or more `=` (or `LTE`) values as assumptions (e.g. as function arguments), and a `=` (or `LTE`) type for goal (e.g. as return type), find a value for the goal or prove that one does not exist
+
+Notes on the implementation:
+
+- The module `Rekenaar.Infer.Monoid` is based on chapter 3 of the report [Evidence-providing problem solvers in Agda](https://github.com/umazalakain/fyp).
+- The module `Rekenaar.Infer.CommutativeMonoid` started out as a copy of `Rekenaar.Infer.Monoid`. One open task is to make these two modules share more code.
 
 ### `Rekenaar.Reflect`
 
@@ -83,15 +88,16 @@ Key functionality:
 
 ### `Rekenaar.Elab`
 
-Elaborator reflection scripts for invoking the solvers.
+Elaborator reflection scripts for invoking the solvers from `Rekenaar.Infer` and scripts for massaging expressions to make them more ammenable to being solved.
 
 Goals include:
 
 - [x] Elaborator scripts for producing `=` values
-- [x] Logic for rewriting applications of succ/cons-like constructors (such as `List.(::)` or `Nat.S`) in terms of `<+>` before running the solvers
-- [ ] Elaborator script that given a guess and a goal type, figures out how to rewrite the goal type to make the guess fit (e.g. rewrite `Vect (n + m) a` into `Vect (m + n) a`)
+- [x] 'Uncompute' scripts for rewriting applications of succ/cons-like constructors (such as `List.(::)` or `Nat.S`) in terms of `<+>` before running the solvers
+- [ ] Elaborator script to make creating `f x -> f y` functions easy given a tactic that can prove that `x = y` (e.g. for generating functions such as `Vect (n + m) a -> Vect (m + n) a` given the `natPlusRefl` tactic)
 - [ ] Elaborator script for replacing multiplication of a stuck term by a constant (e.g. `3 * n`), with repeated addition of the stuck term (e.g. `n + n + n`)
-- [ ] Logic for automatically resolving the interface implementation, element type, neutral value, binary operation(s), and succ/cons-like constructors
+- [ ] Logic for automatically resolving the interface implementation, element type, neutral value, and binary operation(s)
+- [ ] Logic that, given a function such as `List.(++)`, `Nat.plus`, `Nat.mult`, can automatically create 'uncompute' transformations
 
 ## Further reading
 
