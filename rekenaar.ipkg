@@ -16,5 +16,6 @@ modules = Rekenaar
         , Rekenaar.Elab.Uncompute
         , Test.List
         , Test.NatPlus
+        , Test.Misc
 
-tests = Test.NatPlus.permutationTest
+tests = Test.Misc.commutativeMonoid_sortNF_test
