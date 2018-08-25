@@ -14,8 +14,10 @@ modules = Rekenaar
         , Rekenaar.Elab.Monoid
         , Rekenaar.Elab.CommutativeMonoid
         , Rekenaar.Elab.Uncompute
+        , Rekenaar.Elab.Rewrite
         , Test.List
         , Test.NatPlus
         , Test.Misc
+        , Test.Rewrite
 
 tests = Test.Misc.commutativeMonoid_sortNF_test
