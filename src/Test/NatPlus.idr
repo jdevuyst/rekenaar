@@ -24,6 +24,9 @@ plusCommutativeRewrite : (l, r : Nat) -> Fin (l + r) -> Fin (r + l)
 plusCommutativeRewrite l r fin =
   rewrite the (r + l = l + r) (%runElab natPlusRefl) in fin
 
+plusCommutativeRewrite' : (l, r : Nat) -> Fin (l + r) -> Fin (r + l)
+plusCommutativeRewrite' = %runElab natPlusRewrite
+
 plusOneSucc : (r : Nat) -> 1 + r = S r
 plusOneSucc = %runElab natPlusRefl
 

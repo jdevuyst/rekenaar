@@ -21,13 +21,12 @@ plusCommutative = %runElab natPlusRefl
 plusCommutativeRewrite : (l, r : Nat) -> Fin (l + r) -> Fin (r + l)
 plusCommutativeRewrite l r fin = rewrite the (r + l = l + r) (%runElab natPlusRefl) in fin
 
+plusCommutativeRewrite' : (l, r : Nat) -> Fin (l + r) -> Fin (r + l)
+plusCommutativeRewrite' = %runElab natPlusRewrite
+
 succSuccPlusTwo : (n : Nat) -> S (S n) = n + 2
 succSuccPlusTwo = %runElab natPlusRefl
 ```
-
-## Key missing features
-
-- `=` types are often used in conjunction with Idris's `rewrite ... in` feature. It should be possible to write elaborators that can automate such uses further. For example, in the `plusCommutativeRewrite` example the user would ideally not have to spell out the `r + l = l + r` equality.
 
 ## Installation
 
@@ -94,7 +93,7 @@ Goals include:
 
 - [x] Elaborator scripts for producing `=` values
 - [x] 'Uncompute' scripts for rewriting applications of succ/cons-like constructors (such as `List.(::)` or `Nat.S`) in terms of `<+>` before running the solvers
-- [ ] Elaborator script to make creating `f x -> f y` functions easy given a tactic that can prove that `x = y` (e.g. for generating functions such as `Vect (n + m) a -> Vect (m + n) a` given the `natPlusRefl` tactic)
+- [x] Elaborator script to make creating `f x -> f y` functions easy given a tactic that can prove that `x = y` (e.g. for generating functions such as `Vect (n + m) a -> Vect (m + n) a` given the `natPlusRefl` tactic)
 - [ ] Elaborator script for replacing multiplication of a stuck term by a constant (e.g. `3 * n`), with repeated addition of the stuck term (e.g. `n + n + n`)
 - [ ] Logic for automatically resolving the interface implementation, element type, neutral value, and binary operation(s)
 - [ ] Logic that, given a function such as `List.(++)`, `Nat.plus`, `Nat.mult`, can automatically create 'uncompute' transformations

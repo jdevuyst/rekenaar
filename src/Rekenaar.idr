@@ -10,6 +10,7 @@ import Rekenaar.Reflect.Utils
 import public Rekenaar.Elab.Monoid
 import public Rekenaar.Elab.CommutativeMonoid
 import public Rekenaar.Elab.Uncompute
+import public Rekenaar.Elab.Rewrite
 
 %default covering
 %access public export
@@ -44,4 +45,11 @@ natPlusRefl = do
   uncompute $ unSucc {binop=`(plus)} {neutral=`(Z)} {succ=`(S)}
   CommutativeMonoid.refl {ty=`(Nat)} {tc=`(PlusNatCommMonoidV)} {binop=`(plus)} {neutral=`(Z)}
 
--- TODO: add natMultRefl, zzPlusRefl, zzMultRefl
+-- FIXME: redefine as natPlusRewrite = rewriter {ty=`(Nat)} natPlusRefl
+-- See https://github.com/jdevuyst/rekenaar/issues/2
+natPlusRewrite : Elab ()
+natPlusRewrite = do
+  rewriter {ty=`(Nat)} $
+    CommutativeMonoid.refl {ty=`(Nat)} {tc=`(PlusNatCommMonoidV)} {binop=`(plus)} {neutral=`(Z)}
+
+-- TODO: add listRewrite, natMultRefl, zzPlusRefl, zzMultRefl
