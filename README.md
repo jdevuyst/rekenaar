@@ -65,11 +65,6 @@ Ideally Rekenaar will eventually support the following algebraic structures:
 - [ ] Abelian groups such as `⟨ZZ, 0, +⟩` (`Interfaces.Verified.VerifiedAbelianGroup`)
 - [ ] Commutative rings such as `ZZ` with `+` and `*` (`Interfaces.Verified.VerifiedRingWithUnity`)
 
-Constraint solving is also of interest:
-
-- [ ] Given various `=` (or `LTE`) types with free variables (e.g. `(n : Nat ** (m : Nat ** n = m + 3))`), find values for the free variables, and yield values for the resulting (bound) `=` (or `LTE`) types
-- [ ] Given one or more `=` (or `LTE`) values as assumptions (e.g. as function arguments), and a `=` (or `LTE`) type for goal (e.g. as return type), find a value for the goal or prove that one does not exist
-
 Notes on the implementation:
 
 - The module `Rekenaar.Infer.Monoid` is based on chapter 3 of the report [Evidence-providing problem solvers in Agda](https://github.com/umazalakain/fyp).
@@ -95,11 +90,15 @@ Goals include:
 - [x] 'Uncompute' scripts for rewriting applications of succ/cons-like constructors (such as `List.(::)` or `Nat.S`) in terms of `<+>` before running the solvers
 - [x] Elaborator script to make creating `f x -> f y` functions easy given a tactic that can prove that `x = y` (e.g. for generating functions such as `Vect (n + m) a -> Vect (m + n) a` given the `natPlusRefl` tactic)
 - [ ] Elaborator script for replacing multiplication of a stuck term by a constant (e.g. `3 * n`), with repeated addition of the stuck term (e.g. `n + n + n`)
+
+The implementation could be improved as follows:
+
 - [ ] Logic for automatically resolving the interface implementation, element type, neutral value, and binary operation(s)
 - [ ] Logic that, given a function such as `List.(++)`, `Nat.plus`, `Nat.mult`, can automatically create 'uncompute' transformations
 
-## Further reading
+## Related reading
 
 - [Evidence-providing problem solvers in Agda](https://github.com/umazalakain/fyp)
+- [Agda Ring Solver](http://www.cse.chalmers.se/~nad/listings/lib/Algebra.RingSolver.html)
 - [RingIdris](https://github.com/FranckS/RingIdris): Ring solver for Idris 0.6, which does not presently compile for modern versions of Idris
 - [Christiansen's monoid tactic](https://gist.github.com/david-christiansen/066ad771212b2f20ea40)
