@@ -9,6 +9,8 @@ The tactics make use of Idris's [Elaborator Reflection](http://docs.idris-lang.o
 
 ## Examples
 
+Here are a few simple examples that demonstrate what Rekenaar can do:
+
 ```idris
 import Rekenaar
 import Data.Fin
@@ -27,6 +29,8 @@ plusCommutativeRewrite' = %runElab natPlusRewrite
 succSuccPlusTwo : (n : Nat) -> S (S n) = n + 2
 succSuccPlusTwo = %runElab natPlusRefl
 ```
+
+For more realistic examples, see [this commit](https://github.com/jdevuyst/idris-data/commit/771f62863f56b0bb7c1a0a9fddc9a48e55224143), in which an Idris project was modified to use Rekenaar.
 
 ## Installation
 
