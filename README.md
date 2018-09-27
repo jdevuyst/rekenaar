@@ -32,6 +32,10 @@ succSuccPlusTwo = %runElab natPlusRefl
 
 For more realistic examples, see [this commit](https://github.com/jdevuyst/idris-data/commit/771f62863f56b0bb7c1a0a9fddc9a48e55224143), in which an Idris project was modified to use Rekenaar.
 
+There's also a [video tutorial](https://www.youtube.com/watch?v=deYYhTl4zDs):
+
+[![Demo of Rekenaar](http://img.youtube.com/vi/deYYhTl4zDs/0.jpg)](http://www.youtube.com/watch?v=deYYhTl4zDs)
+
 ## Installation
 
 1. Download the Rekenaar source code and open it in the terminal.
