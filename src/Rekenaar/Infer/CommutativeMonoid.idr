@@ -85,7 +85,7 @@ sound (lhs <+> rhs) env =
   rewrite sym $ sortLemma (normalizeMonoid lhs) env in
   rewrite sym $ sortLemma (normalizeMonoid rhs) env in
   rewrite sym $ sortLemma (normalizeMonoid lhs ++ normalizeMonoid rhs) env in
-  homomNF env (normalizeMonoid lhs) (normalizeMonoid rhs)
+  homNF env (normalizeMonoid lhs) (normalizeMonoid rhs)
 
 Solution : VerifiedCommutativeMonoid ty => (lhs, rhs : Expr cnt) -> Type
 Solution {ty} lhs rhs =
@@ -98,5 +98,4 @@ solve : (m: VerifiedCommutativeMonoid ty) => (lhs, rhs : Expr cnt) -> normalize 
 solve lhs rhs sameNF env =
   rewrite sound lhs env in
   rewrite sameNF in
-  rewrite sym $ sound rhs env in
-  Refl
+  sym $ sound rhs env

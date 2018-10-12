@@ -36,11 +36,13 @@ eval env (lhs <+> rhs) = eval env lhs <+> eval env rhs
 evalNF : (m : VerifiedMonoid ty) => Env cnt ty -> NormalForm cnt -> ty
 evalNF env = foldr (\i, acc => index env i <+> acc) neutral
 
-homomNF : (m : VerifiedMonoid ty) => (env : Env cnt ty) -> (is, js : NormalForm cnt) ->
-          (evalNF env is <+> evalNF env js) = evalNF env (is <+> js)
-homomNF env [] js = monoidNeutralIsNeutralR $ evalNF env js
-homomNF env (i::is) js =
-  let indLemma = homomNF env is js
+MonoidHom : (VerifiedMonoid t, VerifiedMonoid u) => (f : t -> u) -> Type
+MonoidHom {t} f = (x, y : t) -> (f x <+> f y) = f (x <+> y)
+
+homNF : (m : VerifiedMonoid ty) => (env : Env cnt ty) -> MonoidHom (evalNF env)
+homNF env [] js = monoidNeutralIsNeutralR $ evalNF env js
+homNF env (i::is) js =
+  let indLemma = homNF env is js
       iLookup = index env i
       isEval = evalNF env is
       jsEval = evalNF env js

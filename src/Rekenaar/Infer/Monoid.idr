@@ -21,7 +21,7 @@ sound (Var i) env = sym $ monoidNeutralIsNeutralL $ index env i
 sound (lhs <+> rhs) env =
   rewrite sound lhs env in
   rewrite sound rhs env in
-  homomNF env (normalize lhs) (normalize rhs)
+  homNF env (normalize lhs) (normalize rhs)
 
 public export
 Solution : (VerifiedMonoid ty) => (lhs, rhs : Expr cnt) -> Type
