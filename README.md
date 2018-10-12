@@ -76,7 +76,6 @@ Ideally Rekenaar will eventually support the following algebraic structures:
 Notes on the implementation:
 
 - The module `Rekenaar.Infer.Monoid` is based on chapter 3 of the report [Evidence-providing problem solvers in Agda](https://github.com/umazalakain/fyp).
-- The module `Rekenaar.Infer.CommutativeMonoid` started out as a copy of `Rekenaar.Infer.Monoid`. One open task is to make these two modules share more code.
 
 ### `Rekenaar.Reflect`
 
