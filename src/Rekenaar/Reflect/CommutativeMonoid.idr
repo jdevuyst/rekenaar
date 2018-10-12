@@ -10,6 +10,7 @@ import Interfaces.Verified
 import Language.Reflection.Utils
 
 import public Rekenaar.Reflect.Utils
+import Rekenaar.Infer.Common
 import Rekenaar.Infer.CommutativeMonoid
 
 %default total
@@ -18,9 +19,9 @@ import Rekenaar.Infer.CommutativeMonoid
 export
 implementation Quotable (Expr cnt) Raw where
   quotedTy {cnt} = `(Expr ~(quote cnt))
-  quote (Var idx) {cnt} = `(CommutativeMonoid.Var {cnt=~(quote cnt)} ~(quote idx))
+  quote (Var idx) {cnt} = `(Var {cnt=~(quote cnt)} ~(quote idx))
   quote Neutral {cnt} = `(Neutral {cnt=~(quote cnt)})
-  quote (lhs <+> rhs) {cnt} = `(CommutativeMonoid.(<+>) {cnt=~(quote cnt)} ~(quote lhs) ~(quote rhs))
+  quote (lhs <+> rhs) {cnt} = `((<+>) {cnt=~(quote cnt)} ~(quote lhs) ~(quote rhs))
 
 shiftFin : (offset : Nat) -> Fin n -> Fin (offset + n)
 shiftFin Z fin = fin

@@ -10,10 +10,10 @@ import Rekenaar.Elab.CommutativeMonoid
 %default total
 %access private
 
-[showNF] Show (CommutativeMonoid.NormalForm n) where
+[showNF] Show (NormalForm n) where
   show xs {n} = show $ map (show . (finToInteger {n})) xs
 
-[eqNF] Eq (CommutativeMonoid.NormalForm n) where
+[eqNF] Eq (NormalForm n) where
   (==) xs ys = show @{showNF} xs == show @{showNF} ys
 
 covering export

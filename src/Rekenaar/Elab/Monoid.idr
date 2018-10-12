@@ -9,6 +9,7 @@ import Interfaces.Verified
 -- pruviloj
 import Pruviloj.Core
 
+import public Rekenaar.Infer.Common
 import public Rekenaar.Infer.Monoid
 import Rekenaar.Reflect.Monoid
 
@@ -23,10 +24,10 @@ elabEq_ ty tc lhs rhs prf atoms {cnt} = do
   let rhs' = the Raw $ quote rhs
   let prf' = the Raw $ quote prf
 
-  let solution = the Raw `(Monoid.solve {ty=~ty} {m=~tc} {cnt=~cnt'} ~lhs' ~rhs' ~prf')
+  let solution = the Raw `(Monoid.solve @{~tc} {ty=~ty} {cnt=~cnt'} ~lhs' ~rhs' ~prf')
 
   let atoms' = rawVect atoms ty
-  let env' = the Raw `(MkEnv {ty=~ty} {m=~tc} {cnt=~cnt'} ~atoms')
+  let env' = the Raw `(MkEnv {ty=~ty} {cnt=~cnt'} ~atoms')
 
   pure $ RApp solution env'
 
