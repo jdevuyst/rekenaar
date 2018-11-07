@@ -57,3 +57,6 @@ natMultRefl = do
   intros
   compute -- FIXME: requires `%freeze mult` directive at calling site
   CommutativeMonoid.refl {ty=`(Nat)} {tc=`(MultNatCommMonoidV)} {binop=`(mult)} {neutral=`(S Z)}
+
+natMultRewrite : Elab ()
+natMultRewrite = rewriter {ty=`(Nat)} natMultRefl

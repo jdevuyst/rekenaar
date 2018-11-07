@@ -64,15 +64,15 @@ The [Rekenaar module](src/Rekenaar.idr) contains the main API. There's a bit of 
 
 Monoids:
 
-[x] listRefl
-[ ] listRewrite
+- [x] `listRefl`
+- [ ] `listRewrite`
 
 Commutative monoids:
 
-[x] natPlusRefl
-[x] natPlusRewrite
-[x] natMultRefl (requires a `%freeze mult` directive at the call site)
-[ ] natMultRewrite
+- [x] `natPlusRefl`
+- [x] `natPlusRewrite`
+- [x] `natMultRefl` (may require a `%freeze mult` directive at the call site)
+- [x] `natMultRewrite`
 
 The `natMultRefl` solver could use some more ad hoc code so as to eliminate the need for the `%freeze` directive.
 

@@ -25,3 +25,6 @@ multCommutative = %runElab natMultRefl
 multCommutativeRewrite : (l, r : Nat) -> Fin (l * r) -> Fin (r * l)
 multCommutativeRewrite l r fin =
   rewrite the (r * l = l * r) (%runElab natMultRefl) in fin
+
+multCommutativeRewrite' : (l, r : Nat) -> Fin (l * r) -> Fin (r * l)
+multCommutativeRewrite' = %runElab natMultRewrite
