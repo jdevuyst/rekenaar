@@ -52,4 +52,8 @@ natPlusRewrite = do
   rewriter {ty=`(Nat)} $
     CommutativeMonoid.refl {ty=`(Nat)} {tc=`(PlusNatCommMonoidV)} {binop=`(plus)} {neutral=`(Z)}
 
--- TODO: add listRewrite, natMultRefl, zzPlusRefl, zzMultRefl
+natMultRefl : Elab ()
+natMultRefl = do
+  intros
+  compute -- FIXME: requires `%freeze mult` directive at calling site
+  CommutativeMonoid.refl {ty=`(Nat)} {tc=`(MultNatCommMonoidV)} {binop=`(mult)} {neutral=`(S Z)}

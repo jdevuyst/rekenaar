@@ -16,6 +16,7 @@ modules = Rekenaar
         , Rekenaar.Elab.Uncompute
         , Rekenaar.Elab.Rewrite
         , Test.List
+        , Test.NatMult
         , Test.NatPlus
         , Test.Misc
         , Test.Rewrite

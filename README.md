@@ -60,7 +60,23 @@ If you want to use Rekenaar in your own project, make sure to include `-p rekena
 
 ### `Rekenaar`
 
-The [Rekenaar module](src/Rekenaar.idr) contains the main API.
+The [Rekenaar module](src/Rekenaar.idr) contains the main API. There's a bit of ad hoc code for each structure, which helps with usability.
+
+Monoids:
+
+[x] listRefl
+[ ] listRewrite
+
+Commutative monoids:
+
+[x] natPlusRefl
+[x] natPlusRewrite
+[x] natMultRefl (requires a `%freeze mult` directive at the call site)
+[ ] natMultRewrite
+
+The `natMultRefl` solver could use some more ad hoc code so as to eliminate the need for the `%freeze` directive.
+
+`natPlusRewrite` could also be [improved](https://github.com/jdevuyst/rekenaar/issues/2).
 
 ### `Rekenaar.Infer`
 
