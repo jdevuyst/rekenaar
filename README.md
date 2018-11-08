@@ -74,7 +74,7 @@ Commutative monoids:
 - [x] `natMultRefl` (may require a `%freeze mult` directive at the call site)
 - [x] `natMultRewrite`
 
-The `natMultRefl` solver could use some more ad hoc code so as to eliminate the need for the `%freeze` directive.
+The `natMultRefl` solver could use some more ad hoc code so as to eliminate the need for the `%freeze` directive. It also does not understand constants yet (treating them as opaque variables).
 
 `natPlusRewrite` could also be [improved](https://github.com/jdevuyst/rekenaar/issues/2).
 
@@ -92,6 +92,7 @@ Ideally Rekenaar will eventually support the following algebraic structures:
 Notes on the implementation:
 
 - The module `Rekenaar.Infer.Monoid` is based on chapter 3 of the report [Evidence-providing problem solvers in Agda](https://github.com/umazalakain/fyp).
+- There's no built-in support for constants at this point. For `⟨Nat, 0, +⟩` this is not a problem because the uncompute logic will rewrite `S (S ... x)` to `1 + 1 + ... + x`. However, for the general case we'll want to change the solver to understand constants.
 
 ### `Rekenaar.Reflect`
 
