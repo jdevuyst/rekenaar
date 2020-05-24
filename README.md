@@ -1,11 +1,15 @@
 # Rekenaar
 
-[Idris](https://www.idris-lang.org) compile-time tactics for solving equations involving monoids and commutative monoids:
+[Idris 1](https://github.com/idris-lang/Idris-dev) compile-time tactics for solving equations involving monoids and commutative monoids:
 
 - Monoids are algebraic structures with an associative binary operation and a neutral element. E.g. `⟨List a, [], ++⟩` is a monoid.
 - Commutative monoids are monoids where the binary operation is commutative (in addition to being associative). E.g. `⟨Nat, 0, +⟩` is a commutative monoid.
 
 The tactics make use of Idris's [Elaborator Reflection](http://docs.idris-lang.org/en/v1.3.0/reference/elaborator-reflection.html). They first inspect the goal type and then attempt to fill in a value (proof) for that type.
+
+Note that Rekenaar is not currently compatible with [Idris 2](https://github.com/idris-lang/Idris2) because, as of 24 May 2020, Idris 2 lacks elaborator reflection:
+
+> Anything which uses a `%language` pragma in Idris 1 is likely to be different. Notably, elaborator reflection will exist, but most likely in a slightly different form because the internal details of the elaborator are different.
 
 ## Examples
 
